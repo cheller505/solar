@@ -1,0 +1,8 @@
+[Unit]
+Description=Enphase cloud history -> Prometheus daily sync
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/appdata/enphase/run_sync.sh

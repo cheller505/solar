@@ -1,0 +1,16 @@
+# secrets / credentials
+token.txt
+oauth.env
+refresh.env
+backfill.env
+.env
+*.env
+!*.env.example
+
+# generated data
+*.om
+enphase_history.om
+sync_test.om
+__pycache__/
+*.pyc
+blocks/

@@ -1,0 +1,17 @@
+# Add to your prometheus.yml.
+
+# 1) Scrape the exporter. 20s matches the exporter's poll interval.
+scrape_configs:
+  - job_name: enphase
+    scrape_interval: 20s
+    static_configs:
+      - targets: ["enphase-exporter:9093"]
+        labels: { instance: apollo }
+
+# 2) Allow recent out-of-order writes so the daily cloud-history sync
+#    (scripts/enphase_sync.py) can remote-write the last few days of daily
+#    production, which are always slightly in the past. Requires a RESTART
+#    (not just a reload) to take effect.
+storage:
+  tsdb:
+    out_of_order_time_window: 30d

@@ -1,0 +1,97 @@
+{
+  "annotations": { "list": [ { "builtIn": 1, "datasource": { "type": "grafana", "uid": "-- Grafana --" }, "enable": true, "hide": true, "iconColor": "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts", "type": "dashboard" } ] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [ { "asDropdown": false, "icon": "external link", "tags": ["enphase"], "targetBlank": false, "title": "Enphase dashboards", "type": "dashboards" } ],
+  "panels": [
+    { "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }, "id": 100, "panels": [], "title": "Enphase Solar — Live", "type": "row" },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "yellow", "value": 1000 }, { "color": "green", "value": 3000 } ] }, "unit": "watt" }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 5, "x": 0, "y": 1 }, "id": 1,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto" },
+      "targets": [ { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "enphase_production_watts", "refId": "A" } ],
+      "title": "Production Now", "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "green", "value": 1 } ] }, "unit": "watt" }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 5, "x": 5, "y": 1 }, "id": 2,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto" },
+      "targets": [ { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(enphase_inverter_last_report_watts)", "refId": "A" } ],
+      "title": "Inverter Sum", "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "yellow", "value": 35 }, { "color": "green", "value": 39 } ] }, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 4, "x": 10, "y": 1 }, "id": 3,
+      "options": { "colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto" },
+      "targets": [ { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "enphase_inverters_reporting", "refId": "A" } ],
+      "title": "Inverters Reporting / 40", "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "mappings": [ { "options": { "0": { "color": "red", "index": 1, "text": "GATEWAY DOWN" } }, "type": "value" }, { "options": { "1": { "color": "green", "index": 0, "text": "ONLINE" } }, "type": "value" } ], "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "green", "value": 1 } ] }, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 5, "x": 14, "y": 1 }, "id": 4,
+      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto" },
+      "targets": [ { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "enphase_up", "refId": "A" } ],
+      "title": "Gateway", "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null } ] }, "unit": "kwatth", "decimals": 1 }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 5, "x": 19, "y": 1 }, "id": 6,
+      "options": { "colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto" },
+      "targets": [ { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "max_over_time(enphase_energy_wh_daily{source=\"cloud\"}[3d]) / 1000", "legendFormat": "today", "refId": "A" } ],
+      "title": "Today (cloud, last day)", "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "custom": { "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 25, "gradientMode": "opacity", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "lineInterpolation": "smooth", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "never", "spanNulls": true, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null } ] }, "unit": "watt", "min": 0 }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 16, "x": 0, "y": 6 }, "id": 10,
+      "options": { "legend": { "calcs": ["max", "mean", "lastNotNull"], "displayMode": "table", "placement": "right" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "enphase_production_watts", "legendFormat": "Production (metered)", "refId": "A" },
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(enphase_inverter_last_report_watts)", "legendFormat": "Production (inverters)", "refId": "B" }
+      ],
+      "title": "Real-time Production", "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "continuous-GrYlRd" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null } ] }, "unit": "watt" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 8, "x": 16, "y": 6 }, "id": 21,
+      "options": { "displayMode": "basic", "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false }, "maxVizHeight": 300, "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [ { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "enphase_inverter_last_report_watts", "legendFormat": "{{serial}}", "refId": "A" } ],
+      "title": "Per-Inverter Output — Current", "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "custom": { "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "lineInterpolation": "smooth", "lineWidth": 1, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "never", "spanNulls": true, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null } ] }, "unit": "watt", "min": 0 }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 15 }, "id": 20,
+      "options": { "legend": { "calcs": ["max", "lastNotNull"], "displayMode": "table", "placement": "right" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [ { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "enphase_inverter_last_report_watts", "legendFormat": "{{serial}}", "refId": "A" } ],
+      "title": "Per-Inverter Output (40 panels)", "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "decimals": 1, "mappings": [], "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "yellow", "value": 60 }, { "color": "green", "value": 100 } ] }, "unit": "watt" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 23 }, "id": 22,
+      "options": { "displayMode": "lcd", "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true }, "minVizHeight": 10, "minVizWidth": 0, "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [ { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "enphase_inverter_max_report_watts", "legendFormat": "{{serial}}", "refId": "A" } ],
+      "title": "Inverter Peak (max reported) per Panel", "type": "bargauge"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["enphase", "solar", "apollo"],
+  "templating": { "list": [ { "current": { "selected": false, "text": "default", "value": "default" }, "hide": 0, "includeAll": false, "label": "Datasource", "multi": false, "name": "datasource", "options": [], "query": "prometheus", "refresh": 1, "regex": "", "skipUrlSync": false, "type": "datasource" } ] },
+  "time": { "from": "now-3h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Enphase Solar — Live",
+  "uid": "enphase-live",
+  "version": 1
+}

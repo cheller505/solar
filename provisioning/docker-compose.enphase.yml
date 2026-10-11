@@ -1,0 +1,17 @@
+# Drop-in service for your existing Docker Compose stack.
+# See README.md for the full setup.
+  enphase-exporter:
+    <<: *common            # if you use a YAML anchor; otherwise repeat restart/env
+    image: python:3.12-alpine
+    container_name: enphase-exporter
+    restart: unless-stopped
+    ports: ["9093:9093"]
+    environment:
+      ENPHASE_GATEWAY: "192.168.50.194"     # your IQ Gateway IP
+      ENPHASE_TOKEN_FILE: "/token/token.txt"
+      ENPHASE_LISTEN_PORT: "9093"
+      ENPHASE_POLL_INTERVAL: "20"
+    volumes:
+      - ./scripts/enphase_exporter.py:/app/enphase_exporter.py:ro
+      - /opt/appdata/enphase/token.txt:/token/token.txt:ro
+    command: ["python3", "/app/enphase_exporter.py"]
