@@ -23,9 +23,12 @@ scripts/
   refresh_enphase_token.py       Same, self-contained (reads refresh.env)
   promrw.py                      Minimal Prometheus remote-write encoder (protobuf+snappy)
   run_sync.sh                    Wrapper for the systemd timer
+  ameren_ingest.py               Ingest Ameren interval-data CSVs (import/export)
+  ameren_ingest.py               Ameren (ACE) meter CSV → Prometheus
 dashboards/
   enphase-live.json              Grafana: live production & per-inverter
   enphase-history.json           Grafana: energy totals & full history
+  home-energy.json               Grafana: Ameren consumption vs solar flows
 systemd/
   enphase-sync.service/.timer    Daily cloud sync
 provisioning/
@@ -103,6 +106,23 @@ them manually. Two dashboards on purpose:
 - **Live** (default `now-3h`) — live metrics only exist from the moment the
   exporter starts, so they look empty on a long range.
 - **History** (default `now-90d`) — cloud history is ~1 sample/day.
+
+### 5. Grid import/export (Ameren) — optional
+
+If your utility provides interval-data CSV exports (Ameren's portal does —
+**Green Button CMD is third-party businesses only**), no API is needed:
+
+```bash
+python3 scripts/ameren_ingest.py remotewrite ACE_Electric_*.csv
+```
+
+`Usage` maps to `ameren_import_watts`/`_wh_daily`, `Reverse Usage` (export)
+to `ameren_export_watts`/`_wh_daily`. Importing more than ~3 weeks of history
+at once requires temporarily raising `storage.tsdb.out_of_order_time_window`
+(restart), pushing with `--window-days=N`, then reverting. Home consumption
+is derived as *import + solar production − export*. Note the `source` labels
+differ between metrics — wrap each term in `sum()` in PromQL or the join
+comes back empty.
 
 ## Gotchas
 

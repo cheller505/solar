@@ -14,3 +14,7 @@ sync_test.om
 __pycache__/
 *.pyc
 blocks/
+
+# utility meter exports (PII)
+ACE_Electric*.csv
+*.csv
