@@ -24,7 +24,6 @@ scripts/
   promrw.py                      Minimal Prometheus remote-write encoder (protobuf+snappy)
   run_sync.sh                    Wrapper for the systemd timer
   ameren_ingest.py               Ingest Ameren interval-data CSVs (import/export)
-  ameren_ingest.py               Ameren (ACE) meter CSV → Prometheus
 dashboards/
   enphase-live.json              Grafana: live production & per-inverter
   enphase-history.json           Grafana: energy totals & full history
